@@ -7,7 +7,7 @@ var password = "asterisk"
 var sip_user = '100'
 var sip_password = '100'
 var media_encryption = 'no'
-var media_encryption_optimistic = false
+var media_encryption_optimistic = 'false'
 
 
 function provision(sip_user, sip_password, media_encryption, media_encryption_optimistic){
@@ -37,6 +37,11 @@ function provision(sip_user, sip_password, media_encryption, media_encryption_op
             })
             .then (function (configTuples){
                 console.log(configTuples)
+                if (media_encryption_optimistic == false) {
+                    media_encryption_optimistic = 'false'
+                } else if (media_encryption_optimistic == true) {
+                    media_encryption_optimistic = 'true'
+                }
                 ari.asterisk.updateObject({
                 configClass: 'res_pjsip',
                 id: sip_user,
