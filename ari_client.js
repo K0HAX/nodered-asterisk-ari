@@ -287,7 +287,7 @@ function provision(url,username,password, sip_user, sip_password, media_encrypti
                       { attribute: 'auth', value: sip_user },
                       { attribute: 'aors', value: sip_user },
                       { attribute: 'media_encryption', value: media_encryption },
-                      { attribute: 'media_encryption_optimistic', value: media_encryption_optimistic }
+                      { attribute: 'media_encryption_optimistic', value: media_encryption_optimistic.toString() }
                   ]
                   })
                   .then (function (configTuples){
