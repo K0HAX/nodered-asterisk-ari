@@ -253,9 +253,7 @@ function provision(url,username,password, sip_user, sip_password, media_encrypti
           fields : [
               { attribute: 'auth_type', value: 'userpass' },
               { attribute: 'username', value: sip_user },
-              { attribute: 'password', value: sip_password },
-              { attribute: 'media_encryption', value: media_encryption },
-              { attribute: 'media_encryption_optimistic', value: media_encryption_optimistic }
+              { attribute: 'password', value: sip_password }
           ]
       })
       .then (function (configTuples){
