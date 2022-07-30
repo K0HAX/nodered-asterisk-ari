@@ -82,8 +82,10 @@ module.exports = function(RED) {
         var node = this;
         this.sip_user = n.sip_user
         this.sip_password = n.sip_password
+        this.media_encryption = n.media_encryption
+        this.media_encryption_optimistic = n.media_encryption_optimistic
         this.server = RED.nodes.getNode(n.server);
-        provision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user, this.sip_password)
+        provision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user, this.sip_password, this.media_encryption, this.media_encryption_optimistic)
         this.conn = ariConnectionPool.setconn(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_password, node)
         this.on("close", function() {
             //deprovision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user)
@@ -241,7 +243,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("ari_bridgedial",ari_bridgedial);
 }
 
-function provision(url,username,password, sip_user, sip_password){
+function provision(url,username,password, sip_user, sip_password, media_encryption, media_encryption_optimistic){
     ari.connect(url, username, password)
     .then(function (client){
         client.asterisk.updateObject({
@@ -251,7 +253,9 @@ function provision(url,username,password, sip_user, sip_password){
           fields : [
               { attribute: 'auth_type', value: 'userpass' },
               { attribute: 'username', value: sip_user },
-              { attribute: 'password', value: sip_password }
+              { attribute: 'password', value: sip_password },
+              { attribute: 'media_encryption', value: media_encryption },
+              { attribute: 'media_encryption_optimistic', value: media_encryption_optimistic }
           ]
       })
       .then (function (configTuples){
@@ -281,7 +285,9 @@ function provision(url,username,password, sip_user, sip_password){
                       { attribute: 'rtp_symmetric', value: "yes" },
                       { attribute: 'context', value: "applications" },
                       { attribute: 'auth', value: sip_user },
-                      { attribute: 'aors', value: sip_user }
+                      { attribute: 'aors', value: sip_user },
+                      { attribute: 'media_encryption', value: media_encryption },
+                      { attribute: 'media_encryption_optimistic', value: media_encryption_optimistic }
                   ]
                   })
                   .then (function (configTuples){
