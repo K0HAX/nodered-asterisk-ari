@@ -6,9 +6,11 @@ var password = "asterisk"
 
 var sip_user = '100'
 var sip_password = '100'
+var media_encryption = 'no'
+var media_encryption_optimistic = 'false'
 
 
-function provision(sip_user, sip_password){
+function provision(sip_user, sip_password, media_encryption, media_encryption_optimistic){
   client.connect(url, username, password)
   .then(function (ari){
     ari.asterisk.updateObject({
@@ -35,6 +37,11 @@ function provision(sip_user, sip_password){
             })
             .then (function (configTuples){
                 console.log(configTuples)
+                if (media_encryption_optimistic == false) {
+                    media_encryption_optimistic = 'false'
+                } else if (media_encryption_optimistic == true) {
+                    media_encryption_optimistic = 'true'
+                }
                 ari.asterisk.updateObject({
                 configClass: 'res_pjsip',
                 id: sip_user,
@@ -48,7 +55,9 @@ function provision(sip_user, sip_password){
                     { attribute: 'rtp_symmetric', value: "yes" },
                     { attribute: 'context', value: "applications" },
                     { attribute: 'auth', value: sip_user },
-                    { attribute: 'aors', value: sip_user }
+                    { attribute: 'aors', value: sip_user },
+                    { attribute: 'media_encryption', value: media_encryption },
+                    { attribute: 'media_encryption_optimistic', value: media_encryption_optimistic }
                 ]
                 })
                 .then (function (configTuples){
