@@ -53,6 +53,8 @@ module.exports = function(RED) {
             if (!dialed){
                 var channelid = ariConnectionPool.setchan(channel)
                 var msg = {}
+                console.log(channelid);
+                console.log(id);
                 msg.channel = channelid
                 msg.client = id
                 msg.payload = event
@@ -88,8 +90,8 @@ module.exports = function(RED) {
         provision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user, this.sip_password, this.media_encryption, this.media_encryption_optimistic)
         this.conn = ariConnectionPool.setconn(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_password, node)
         this.on("close", function() {
-            //deprovision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user)
-            //this.conn.close()
+            deprovision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user)
+            this.conn.close()
         });
     }
     RED.nodes.registerType("ari_client",ari_client);
