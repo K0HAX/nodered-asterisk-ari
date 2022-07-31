@@ -88,7 +88,7 @@ module.exports = function(RED) {
         this.media_encryption_optimistic = n.media_encryption_optimistic
         this.server = RED.nodes.getNode(n.server);
         provision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user, this.sip_password, this.media_encryption, this.media_encryption_optimistic)
-        this.conn = ariConnectionPool.setconn(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_password, node)
+        this.conn = ariConnectionPool.setconn(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user, node)
         this.on("close", function() {
             deprovision(this.server.credentials.url, this.server.credentials.username, this.server.credentials.password, this.sip_user)
             this.conn.close()
