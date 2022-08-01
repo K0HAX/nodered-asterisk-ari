@@ -181,6 +181,11 @@ module.exports = function(RED) {
           console.log(client);
           console.log(channel);
           console.log(bridge);
+          bridge.addChannel({channel: [channel.id]})
+          msg.payload = {bridge : bridge.id}
+          if (n.connected_event) {
+              node.send(msg);
+          }
           dialed.on('StasisStart', function(event, dialed) {
             console.log("---- Stasis Start ----");
             console.log("event: ");
@@ -189,17 +194,12 @@ module.exports = function(RED) {
             console.log("dialed: ");
             console.log(dialed);
             dialed.answer(function(err) {if (err) {throw err;}})
-            bridge.addChannel({channel: [channel.id, dialed.id]}, function(err) {if (err) {throw err;}});
+            bridge.addChannel({channel: [dialed.id]}, function(err) {if (err) {throw err;}});
             var channelid = ariConnectionPool.setchan(dialed)
-            var bmsg = {}
-            bmsg.channel = channelid
-            bmsg.client = client.id
             msg.type = "connected"
-            bmsg.type = "connected"
-            bmsg.payload = {bridge : bridge.id}
             msg.payload = {bridge : bridge.id}
             if (n.connected_event) {
-                node.send([msg, bmsg])
+                node.send(msg)
             }
           });
           dialed.on('StasisEnd', function(event, dialed) {
