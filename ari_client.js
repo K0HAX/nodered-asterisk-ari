@@ -165,7 +165,6 @@ module.exports = function(RED) {
     function ari_bridgedial(n){
         RED.nodes.createNode(this,n);
         var node = this;
-        console.log(n)
         this.destination = n.destination
         this.callerId = n.callerId
         node.on('input', function (msg) {
@@ -178,6 +177,10 @@ module.exports = function(RED) {
           bridge.create({type: 'mixing, dtmf_events'}, function(err) {if (err) {throw err;}})
           var bridgeid = bridge.id
           client.start(bridgeid);
+          console.log(msg);
+          console.log(client);
+          console.log(channel);
+          console.log(bridge);
           dialed.on('StasisStart', function(event, dialed) {
             dialed.answer(function(err) {if (err) {throw err;}})
             bridge.addChannel({channel: [channel.id, dialed.id]}, function(err) {if (err) {throw err;}});
