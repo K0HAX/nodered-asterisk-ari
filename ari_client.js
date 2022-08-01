@@ -174,8 +174,8 @@ module.exports = function(RED) {
           // Create outbound channel
           var dialed = client.Channel();
           var bridge = client.Bridge();
-          var bridgeid = bridge.id
           bridge.create({type: 'mixing, dtmf_events'}, function(err) {if (err) {throw err;}})
+          var bridgeid = bridge.id
           client.start(bridgeid);
           dialed.on('StasisStart', function(event, dialed) {
             dialed.answer(function(err) {if (err) {throw err;}})
@@ -309,27 +309,18 @@ function provision(url,username,password, sip_user, sip_password, media_encrypti
           configClass: 'res_pjsip',
           id: sip_user,
           objectType: 'endpoint'
-      })
-      .then (function (configTuples){
-          //console.log(configTuples)
-          client.asterisk.deleteObject({
-              configClass: 'res_pjsip',
-              id: sip_user,
-              objectType: 'aor'
-              
-              })
-              .then (function (configTuples){
-                  console.log(configTuples)
-                  client.asterisk.deleteObject({
-                  configClass: 'res_pjsip',
-                  id: sip_user,
-                  objectType: 'auth'
-                  })
-                  .then (function (configTuples){
-                      console.log(configTuples)
-                  })
-              })
+      });
+      client.asterisk.deleteObject({
+          configClass: 'res_pjsip',
+          id: sip_user,
+          objectType: 'aor'
+          
           })
+      client.asterisk.deleteObject({
+          configClass: 'res_pjsip',
+          id: sip_user,
+          objectType: 'auth'
+      });
     })
     .catch(function (err) {
         console.log(err)
