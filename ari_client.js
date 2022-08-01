@@ -165,6 +165,7 @@ module.exports = function(RED) {
     function ari_bridgedial(n){
         RED.nodes.createNode(this,n);
         var node = this;
+        console.log(n)
         this.destination = n.destination
         this.callerId = n.callerId
         node.on('input', function (msg) {
