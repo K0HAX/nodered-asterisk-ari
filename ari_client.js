@@ -182,6 +182,12 @@ module.exports = function(RED) {
           console.log(channel);
           console.log(bridge);
           dialed.on('StasisStart', function(event, dialed) {
+            console.log("---- Stasis Start ----");
+            console.log("event: ");
+            console.log(event);
+            console.log("----");
+            console.log("dialed: ");
+            console.log(dialed);
             dialed.answer(function(err) {if (err) {throw err;}})
             bridge.addChannel({channel: [channel.id, dialed.id]}, function(err) {if (err) {throw err;}});
             var channelid = ariConnectionPool.setchan(dialed)
